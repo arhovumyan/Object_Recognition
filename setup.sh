@@ -5,7 +5,7 @@
 
 set -e
 
-echo "🚁 Setting up Drone Object Recognition System..."
+echo "Setting up Drone Object Recognition System..."
 
 # Colors for output
 RED='\033[0;31m'
@@ -166,56 +166,56 @@ echo "🧪 Testing Drone Object Recognition System..."
 
 # Check if ROS2 is sourced
 if ! command -v ros2 &> /dev/null; then
-    echo "❌ ROS2 not found. Please source ROS2:"
+    echo "ROS2 not found. Please source ROS2:"
     echo "source /opt/ros/jazzy/setup.bash"
     exit 1
 fi
 
 # Test 1: Check if package is built
-echo "📦 Checking package build..."
+echo "Checking package build..."
 if ros2 pkg list | grep -q "drone_object_recognition"; then
-    echo "✅ Package found"
+    echo "Package found"
 else
-    echo "❌ Package not found. Please build the package:"
+    echo "Package not found. Please build the package:"
     echo "colcon build --packages-select drone_object_recognition"
     exit 1
 fi
 
 # Test 2: Check if nodes can be found
-echo "🔍 Checking executable nodes..."
+echo "Checking executable nodes..."
 if ros2 pkg executables drone_object_recognition | grep -q "yolo_detector.py"; then
-    echo "✅ YOLO detector executable found"
+    echo "YOLO detector executable found"
 else
-    echo "❌ YOLO detector executable not found"
+    echo "YOLO detector executable not found"
 fi
 
 if ros2 pkg executables drone_object_recognition | grep -q "mobilenet_classifier.py"; then
-    echo "✅ MobileNet classifier executable found"
+    echo "MobileNet classifier executable found"
 else
-    echo "❌ MobileNet classifier executable not found"
+    echo "MobileNet classifier executable not found"
 fi
 
 if ros2 pkg executables drone_object_recognition | grep -q "object_recognition_pipeline.py"; then
-    echo "✅ Pipeline executable found"
+    echo "Pipeline executable found"
 else
-    echo "❌ Pipeline executable not found"
+    echo "Pipeline executable not found"
 fi
 
 # Test 3: Check Python dependencies
-echo "🐍 Checking Python dependencies..."
+echo "Checking Python dependencies..."
 python3 -c "
 try:
     import torch
     import cv2
     from ultralytics import YOLO
     import tensorflow as tf
-    print('✅ All Python dependencies available')
+    print('All Python dependencies available')
 except ImportError as e:
-    print(f'❌ Missing dependency: {e}')
+    print(f'Missing dependency: {e}')
     exit(1)
 "
 
-echo "🎉 System test completed!"
+echo "System test completed!"
 echo ""
 echo "To run the system:"
 echo "ros2 launch drone_object_recognition object_recognition.launch.py"
@@ -227,7 +227,7 @@ EOF
 
 # Main setup function
 main() {
-    echo "🚁 Drone Object Recognition Setup"
+    echo "Drone Object Recognition Setup"
     echo "================================="
     
     # Check arguments
@@ -245,7 +245,7 @@ main() {
     create_test_script
     
     echo ""
-    print_success "Setup completed successfully! 🎉"
+    print_success "Setup completed successfully!"
     echo ""
     echo "Next steps:"
     echo "1. Activate the virtual environment:"

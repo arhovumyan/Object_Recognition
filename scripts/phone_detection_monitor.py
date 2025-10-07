@@ -133,7 +133,7 @@ class PhoneDetectionMonitor(Node):
             
             # Add phone detection indicator
             if self.phone_found:
-                cv2.putText(display_image, "📱 PHONE DETECTED!", 
+                cv2.putText(display_image, "PHONE DETECTED!", 
                           (self.display_width - 200, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 3)
             
             # Display image

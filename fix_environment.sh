@@ -5,7 +5,7 @@
 
 set -e
 
-echo "🔧 Fixing Python environment..."
+echo "Fixing Python environment..."
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -66,7 +66,7 @@ echo "ros2 launch drone_object_recognition object_recognition.launch.py"
 EOF
 chmod +x activate_env.sh
 
-print_success "Environment fixed successfully! 🎉"
+print_success "Environment fixed successfully!"
 echo ""
 echo "Next steps:"
 echo "1. Activate the virtual environment:"

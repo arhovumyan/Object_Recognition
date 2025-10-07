@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-## 🚀 Get Started in 5 Minutes
+## Get Started in 5 Minutes
 
 ### 1. Setup Environment
 ```bash
@@ -72,13 +72,13 @@ ros2 topic echo /target_object_found
 ros2 topic pub /recognition_command std_msgs/String "data: 'phone'"
 ```
 
-## 📊 Expected Performance
+## Expected Performance
 
 - **YOLOv8s**: ~30-60 FPS on GPU, ~5-15 FPS on CPU
 - **MobileNetV3**: ~100+ FPS on GPU, ~20-50 FPS on CPU
 - **Total System**: ~5-30 FPS depending on hardware
 
-## 🎯 Target Objects
+## Target Objects
 
 The system detects these objects:
 - **Phone**: Detected as "cell phone" by YOLO
@@ -86,7 +86,7 @@ The system detects these objects:
 - **Hat**: Detected as "person" by YOLO, classified as hat-wearing
 - **Toothbrush**: Not in YOLO dataset (requires custom training)
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -128,7 +128,7 @@ ros2 node info /mobilenet_classifier
 rqt_image_view
 ```
 
-## 📱 Integration with Drone
+## Integration with Drone
 
 The system publishes target positions for drone control:
 ```bash

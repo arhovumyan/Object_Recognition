@@ -152,7 +152,7 @@ class YOLODetector(Node):
                             # Add text with detection info
                             text = f"{class_name}: {confidence:.2f}"
                             if is_phone:
-                                text = f"📱 PHONE: {confidence:.2f}"
+                                text = f"PHONE: {confidence:.2f}"
                             
                             cv2.putText(debug_image, text, 
                                       (int(x1), int(y1-10)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)

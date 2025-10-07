@@ -3,6 +3,7 @@
 """
 Simple test script to verify the object recognition system components.
 This script tests the YOLO and MobileNet models without ROS2.
+ros2 launch drone_object_recognition object_recognition.launch.py
 
 Note: Make sure to activate the virtual environment first:
 source venv/bin/activate
@@ -21,22 +22,22 @@ import os
 
 def test_yolo():
     """Test YOLOv8s model loading and basic functionality."""
-    print("🔍 Testing YOLOv8s...")
+    print("Testing YOLOv8s...")
     
     try:
         # Load model
         model = YOLO('yolov8s.pt')
-        print("✅ YOLOv8s model loaded successfully")
+        print("YOLOv8s model loaded successfully")
         
         # Create a test image
         test_image = np.random.randint(0, 255, (640, 640, 3), dtype=np.uint8)
         
         # Run inference
         results = model(test_image, conf=0.5)
-        print("✅ YOLO inference completed")
+        print("YOLO inference completed")
         
         # Print available classes
-        print(f"📋 Available YOLO classes: {len(model.names)} classes")
+        print(f"Available YOLO classes: {len(model.names)} classes")
         target_classes = ['person', 'cell phone', 'laptop', 'tv']
         for cls in target_classes:
             if cls in model.names.values():
@@ -46,7 +47,7 @@ def test_yolo():
         return True
         
     except Exception as e:
-        print(f"❌ YOLO test failed: {str(e)}")
+        print(f"YOLO test failed: {str(e)}")
         return False
 
 
@@ -61,7 +62,7 @@ def test_mobilenet():
             weights='imagenet',
             include_top=True
         )
-        print("✅ MobileNetV3 model loaded successfully")
+        print("MobileNetV3 model loaded successfully")
         
         # Create a test image
         test_image = np.random.randint(0, 255, (224, 224, 3), dtype=np.uint8)
@@ -75,8 +76,8 @@ def test_mobilenet():
         predictions = model.predict(img_array, verbose=0)
         decoded_predictions = decode_predictions(predictions, top=3)[0]
         
-        print("✅ MobileNetV3 inference completed")
-        print("📋 Sample predictions:")
+        print("MobileNetV3 inference completed")
+        print("Sample predictions:")
         for class_id, class_name, confidence in decoded_predictions:
             print(f"   - {class_name}: {confidence:.3f}")
         
@@ -89,14 +90,14 @@ def test_mobilenet():
                     found_targets.append(class_name)
         
         if found_targets:
-            print(f"🎯 Found potential target objects: {found_targets}")
+            print(f"Found potential target objects: {found_targets}")
         else:
-            print("ℹ️  No direct target objects in top predictions (this is normal for random images)")
+            print("No direct target objects in top predictions (this is normal for random images)")
         
         return True
         
     except Exception as e:
-        print(f"❌ MobileNetV3 test failed: {str(e)}")
+        print(f"MobileNetV3 test failed: {str(e)}")
         return False
 
 
@@ -113,19 +114,19 @@ def test_opencv():
         resized = cv2.resize(test_image, (224, 224))
         gray = cv2.cvtColor(test_image, cv2.COLOR_BGR2GRAY)
         
-        print("✅ OpenCV basic operations working")
-        print(f"📏 Image shape: {test_image.shape}")
+        print("OpenCV basic operations working")
+        print(f"Image shape: {test_image.shape}")
         
         return True
         
     except Exception as e:
-        print(f"❌ OpenCV test failed: {str(e)}")
+        print(f"OpenCV test failed: {str(e)}")
         return False
 
 
 def test_dependencies():
     """Test all required dependencies."""
-    print("\n📦 Testing dependencies...")
+    print("\nTesting dependencies...")
     
     dependencies = [
         ('torch', 'PyTorch'),
@@ -140,9 +141,9 @@ def test_dependencies():
     for module, name in dependencies:
         try:
             __import__(module)
-            print(f"✅ {name}")
+            print(f"OK: {name}")
         except ImportError:
-            print(f"❌ {name} - not installed")
+            print(f"FAIL: {name} - not installed")
             all_good = False
     
     return all_good
@@ -150,7 +151,7 @@ def test_dependencies():
 
 def main():
     """Run all tests."""
-    print("🚁 Drone Object Recognition System - Component Tests")
+    print("Drone Object Recognition System - Component Tests")
     print("=" * 60)
     
     tests = [
@@ -165,12 +166,12 @@ def main():
         results[test_name] = test_func()
     
     print("\n" + "=" * 60)
-    print("📊 Test Results Summary:")
+    print("Test Results Summary:")
     print("=" * 60)
     
     all_passed = True
     for test_name, passed in results.items():
-        status = "✅ PASS" if passed else "❌ FAIL"
+        status = "PASS" if passed else "FAIL"
         print(f"{test_name:20} {status}")
         if not passed:
             all_passed = False
@@ -178,12 +179,12 @@ def main():
     print("=" * 60)
     
     if all_passed:
-        print("🎉 All tests passed! System is ready for ROS2 integration.")
+        print("All tests passed! System is ready for ROS2 integration.")
         print("\nNext steps:")
         print("1. Build the ROS2 package: colcon build --packages-select drone_object_recognition")
         print("2. Run the system: ros2 launch drone_object_recognition object_recognition.launch.py")
     else:
-        print("⚠️  Some tests failed. Please check the error messages above.")
+        print("Some tests failed. Please check the error messages above.")
         print("\nCommon solutions:")
         print("- Install missing dependencies: pip install -r requirements.txt")
         print("- Check CUDA installation if using GPU")

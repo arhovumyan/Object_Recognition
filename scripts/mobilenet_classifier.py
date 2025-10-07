@@ -150,13 +150,13 @@ class MobileNetClassifier(Node):
                     if is_phone:
                         self.phone_detection_count += 1
                         target_found = True
-                        classification_results.append(f"📱 PHONE: {confidence:.3f}")
+                        classification_results.append(f"PHONE: {confidence:.3f}")
                         
-                        self.get_logger().info(f"📱 PHONE DETECTED: {class_name} (confidence: {confidence:.3f})")
+                        self.get_logger().info(f"PHONE DETECTED: {class_name} (confidence: {confidence:.3f})")
                         
                         # Draw bright yellow bounding box for phones
                         cv2.rectangle(debug_image, (x1, y1), (x2, y2), (0, 255, 255), 4)
-                        cv2.putText(debug_image, f"📱 PHONE: {confidence:.2f}", 
+                        cv2.putText(debug_image, f"PHONE: {confidence:.2f}", 
                                   (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 3)
                     else:
                         # Check if this is any other target object
