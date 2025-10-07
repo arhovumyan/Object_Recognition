@@ -1,0 +1,31 @@
+# Object Recognition Pipeline Configuration
+
+# Target objects
+target_objects:
+  - "toothbrush"
+  - "mouse"
+  - "phone"
+  - "hat"
+
+# Default settings
+default_target: "phone"
+target_found_timeout: 5.0  # seconds
+
+# Status reporting
+status_update_rate: 1.0  # Hz
+publish_target_position: true
+
+# Topics
+topics:
+  camera_input: "/camera/image_raw"
+  detections: "/object_detections"
+  classification: "/object_classification"
+  target_found: "/target_object_found"
+  status: "/recognition_status"
+  target_position: "/target_position"
+  command: "/recognition_command"
+
+# Debug settings
+enable_debug_output: true
+log_detection_results: true
+log_classification_results: true
