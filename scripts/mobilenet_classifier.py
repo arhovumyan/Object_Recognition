@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/aro/Documents/ObjectRec/.venv/bin/python3
 
 import rclpy
 from rclpy.node import Node
@@ -28,15 +28,19 @@ class MobileNetClassifier(Node):
         # Initialize CV bridge
         self.bridge = CvBridge()
         
-        # Load MobileNetV3 model
+        # Load MobileNetV3 model with CPU-only configuration
         self.get_logger().info("Loading MobileNetV3 model...")
         try:
+            # Force TensorFlow to use CPU only
+            tf.config.set_visible_devices([], 'GPU')
+            self.get_logger().info("TensorFlow configured for CPU-only mode")
+            
             self.model = MobileNetV3Small(
                 input_shape=(224, 224, 3),
                 weights='imagenet',
                 include_top=True
             )
-            self.get_logger().info("MobileNetV3 model loaded successfully")
+            self.get_logger().info("MobileNetV3 model loaded successfully (CPU mode)")
         except Exception as e:
             self.get_logger().error(f"Failed to load MobileNetV3 model: {str(e)}")
             return
@@ -121,8 +125,8 @@ class MobileNetClassifier(Node):
             
             for detection in msg.detections:
                 # Extract bounding box
-                center_x = detection.bbox.center.position.x
-                center_y = detection.bbox.center.position.y
+                center_x = detection.bbox.center.x
+                center_y = detection.bbox.center.y
                 size_x = detection.bbox.size_x
                 size_y = detection.bbox.size_y
                 
@@ -221,8 +225,9 @@ class MobileNetClassifier(Node):
             img_array = np.expand_dims(img_array, axis=0)
             img_array = preprocess_input(img_array)
             
-            # Make prediction
-            predictions = self.model.predict(img_array, verbose=0)
+            # Make prediction with CPU device
+            with tf.device('/CPU:0'):
+                predictions = self.model.predict(img_array, verbose=0)
             
             # Decode predictions
             decoded_predictions = decode_predictions(predictions, top=5)[0]

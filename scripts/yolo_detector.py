@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/aro/Documents/ObjectRec/.venv/bin/python3
 
 import rclpy
 from rclpy.node import Node
@@ -21,30 +21,37 @@ class YOLODetector(Node):
     def __init__(self):
         super().__init__('yolo_detector')
         
+        # Parameters (exposed to launch files)
+        self.declare_parameter('camera_topic', '/camera/image_raw')
+        self.declare_parameter('confidence_threshold', 0.30)
+        self.declare_parameter('phone_confidence_threshold', 0.20)
+        self.declare_parameter('iou_threshold', 0.45)
+        self.declare_parameter('imgsz', 960)  # inference size; larger helps small objects like phones
+        
+        self.camera_topic = self.get_parameter('camera_topic').get_parameter_value().string_value
+        self.confidence_threshold = float(self.get_parameter('confidence_threshold').value)
+        self.phone_confidence_threshold = float(self.get_parameter('phone_confidence_threshold').value)
+        self.iou_threshold = float(self.get_parameter('iou_threshold').value)
+        self.imgsz = int(self.get_parameter('imgsz').value)
+
         # Initialize CV bridge
         self.bridge = CvBridge()
         
-        # Load YOLOv8s model
+        # Load YOLOv8s model with CPU-only configuration
         self.get_logger().info("Loading YOLOv8s model...")
         try:
             self.model = YOLO('yolov8s.pt')
-            self.get_logger().info("YOLOv8s model loaded successfully")
+            # Force CPU usage for YOLO
+            self.model.to('cpu')
+            self.get_logger().info("YOLOv8s model loaded successfully (CPU mode)")
         except Exception as e:
             self.get_logger().error(f"Failed to load YOLOv8s model: {str(e)}")
             return
         
-        # Define target classes - focus on phone detection
-        # YOLO COCO classes that might match our targets
-        self.target_classes = {
-            'phone': 67,       # cell phone - our main target
-            'person': 0,       # person (for hat detection)
-            'laptop': 63,      # laptop (for mouse detection)
-            'tv': 62,          # tv (additional objects)
-            'remote': 74       # remote (additional objects)
+        # Per-class thresholds (default higher, lower for phone)
+        self.class_thresholds = {
+            67: self.phone_confidence_threshold  # cell phone
         }
-        
-        # Phone-specific detection settings
-        self.phone_confidence_threshold = 0.3  # Lower threshold for phone detection
         
         # Get COCO class names
         self.class_names = self.model.names
@@ -52,7 +59,7 @@ class YOLODetector(Node):
         # Publishers and subscribers
         self.image_sub = self.create_subscription(
             Image,
-            '/camera/image_raw',
+            self.camera_topic,
             self.image_callback,
             10
         )
@@ -69,9 +76,6 @@ class YOLODetector(Node):
             10
         )
         
-        # Detection parameters - optimized for real-time phone detection
-        self.confidence_threshold = 0.3  # Lower threshold for more detections
-        self.iou_threshold = 0.45
         self.phone_detection_count = 0
         self.total_detection_count = 0
         
@@ -85,8 +89,8 @@ class YOLODetector(Node):
             # Convert ROS image to OpenCV
             cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
             
-            # Run YOLO inference
-            results = self.model(cv_image, conf=self.confidence_threshold, iou=self.iou_threshold)
+            # Run YOLO inference with CPU device (use configured thresholds and image size)
+            results = self.model(cv_image, conf=self.confidence_threshold, iou=self.iou_threshold, imgsz=self.imgsz, device='cpu')
             
             # Process detections
             detections = Detection2DArray()
@@ -105,21 +109,18 @@ class YOLODetector(Node):
                         class_id = int(box.cls[0].cpu().numpy())
                         class_name = self.class_names[class_id]
                         
-                        # Check if this is a target class or potentially relevant
-                        is_target = self.is_target_object(class_name, class_id)
-                        is_phone = (class_id == 67)  # cell phone class
+                        # Threshold by class (fallback to general threshold)
+                        is_phone = (class_id == 67)
+                        detection_threshold = self.class_thresholds.get(class_id, self.confidence_threshold)
                         
-                        # Lower threshold for phone detection, higher for others
-                        detection_threshold = self.phone_confidence_threshold if is_phone else 0.5
-                        
-                        if is_target and confidence > detection_threshold:
+                        if confidence > detection_threshold:
                             # Create detection message
                             detection = Detection2D()
                             detection.header = msg.header
                             
-                            # Set bounding box
-                            detection.bbox.center.position.x = float((x1 + x2) / 2)
-                            detection.bbox.center.position.y = float((y1 + y2) / 2)
+                            # Set bounding box (BoundingBox2D uses Pose2D center: x, y, theta)
+                            detection.bbox.center.x = float((x1 + x2) / 2)
+                            detection.bbox.center.y = float((y1 + y2) / 2)
                             detection.bbox.size_x = float(x2 - x1)
                             detection.bbox.size_y = float(y2 - y1)
                             
@@ -140,7 +141,7 @@ class YOLODetector(Node):
                             if is_phone:
                                 color = (0, 255, 255)  # Yellow for phones
                                 thickness = 3
-                            elif is_target:
+                            elif not is_phone:
                                 color = (0, 255, 0)    # Green for other targets
                                 thickness = 2
                             else:
@@ -164,6 +165,10 @@ class YOLODetector(Node):
             if self.total_detection_count > 0 and self.total_detection_count % 50 == 0:
                 phone_percentage = (self.phone_detection_count / self.total_detection_count) * 100
                 self.get_logger().info(f"Detection stats - Total: {self.total_detection_count}, Phones: {self.phone_detection_count} ({phone_percentage:.1f}%)")
+            
+            # Display debug image in window
+            cv2.imshow('YOLO Object Detection - Live Feed', debug_image)
+            cv2.waitKey(1)
             
             # Publish debug image
             try:
@@ -204,6 +209,7 @@ def main(args=None):
         pass
     finally:
         detector.destroy_node()
+        cv2.destroyAllWindows()
         rclpy.shutdown()
 
 

@@ -24,10 +24,12 @@ install(PROGRAMS
   scripts/yolo_detector.py
   scripts/mobilenet_classifier.py
   scripts/object_recognition_pipeline.py
-  scripts/camera_recorder.py
   scripts/phone_detection_monitor.py
   scripts/analyze_results.py
   scripts/play_recording.py
+  scripts/yolo_detector_wrapper.py
+  scripts/mobilenet_classifier_wrapper.py
+  scripts/object_recognition_pipeline_wrapper.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

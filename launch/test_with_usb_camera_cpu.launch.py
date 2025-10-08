@@ -8,8 +8,8 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     """
-    Launch file for testing with USB camera.
-    Includes camera node and object recognition system.
+    Launch file for testing with USB camera (CPU-only mode).
+    Includes camera node and object recognition system with forced CPU usage.
     """
     
     # Declare launch arguments
@@ -24,6 +24,9 @@ def generate_launch_description():
         default_value='/camera/image_raw',
         description='Camera topic to publish to'
     )
+    
+    # Environment variable to force CPU usage
+    cpu_env = {'CUDA_VISIBLE_DEVICES': ''}
     
     # USB Camera Node (using usb_cam package)
     usb_camera_node = Node(
@@ -44,10 +47,10 @@ def generate_launch_description():
         ]
     )
     
-    # YOLO Detector Node
+    # YOLO Detector Node (CPU-only)
     yolo_detector_node = Node(
         package='drone_object_recognition',
-        executable='yolo_detector.py',
+        executable='scripts/yolo_detector_wrapper.py',
         name='yolo_detector',
         output='screen',
         parameters=[{
@@ -59,23 +62,26 @@ def generate_launch_description():
         }],
         remappings=[
             ('/camera/image_raw', LaunchConfiguration('camera_topic'))
-        ]
+        ],
+        env=cpu_env
     )
     
-    # MobileNet Classifier Node
+    # MobileNet Classifier Node (CPU-only)
     mobilenet_classifier_node = Node(
         package='drone_object_recognition',
-        executable='mobilenet_classifier.py',
+        executable='scripts/mobilenet_classifier_wrapper.py',
         name='mobilenet_classifier',
-        output='screen'
+        output='screen',
+        env=cpu_env
     )
     
     # Object Recognition Pipeline Node
     pipeline_node = Node(
         package='drone_object_recognition',
-        executable='object_recognition_pipeline.py',
+        executable='scripts/object_recognition_pipeline_wrapper.py',
         name='object_recognition_pipeline',
-        output='screen'
+        output='screen',
+        env=cpu_env
     )
     
     return LaunchDescription([

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/aro/Documents/ObjectRec/.venv/bin/python3
 
 import rclpy
 from rclpy.node import Node
