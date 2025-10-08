@@ -1,1 +1,0 @@
-# Drone Object Recognition Package

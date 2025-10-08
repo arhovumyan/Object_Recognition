@@ -21,36 +21,13 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python scripts
 install(PROGRAMS
-  scripts/yolo_detector.py
-  scripts/mobilenet_classifier.py
-  scripts/object_recognition_pipeline.py
-  scripts/phone_detection_monitor.py
-  scripts/analyze_results.py
-  scripts/play_recording.py
-  scripts/yolo_detector_wrapper.py
-  scripts/mobilenet_classifier_wrapper.py
-  scripts/object_recognition_pipeline_wrapper.py
+  live_object_detection.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# Install test scripts
-install(PROGRAMS
-  test_simple.py
-  setup.sh
-  DESTINATION lib/${PROJECT_NAME}
-)
+# No test scripts to install
 
-# Install launch files
-install(DIRECTORY
-  launch
-  DESTINATION share/${PROJECT_NAME}/
-)
-
-# Install config files
-install(DIRECTORY
-  config
-  DESTINATION share/${PROJECT_NAME}/
-)
+# No launch files or config directories to install
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

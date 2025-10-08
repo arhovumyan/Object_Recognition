@@ -17,6 +17,7 @@ Usage:
 Press 'q' to quit
 """
 
+import os
 import cv2
 import numpy as np
 from ultralytics import YOLO
@@ -60,7 +61,26 @@ def main():
     print(f"\nUsing device: {device.upper()}")
     
     # Load YOLO model - use YOLOv8n for CPU, YOLOv8s for GPU
-    model_file = 'yolov8s.pt' if use_gpu else 'yolov8n.pt'
+    model_name = 'yolov8s.pt' if use_gpu else 'yolov8n.pt'
+
+    # Prefer a dedicated models/ directory so large model files can be moved
+    # out of the repository root (e.g. repo_root/models/yolov8s.pt)
+    candidate_paths = [
+        os.path.join('models', model_name),  # ./models/yolov8s.pt
+        os.path.join('.', model_name),       # ./yolov8s.pt
+        model_name                           # fallback - ultralytics will download if not present
+    ]
+
+    model_file = None
+    for p in candidate_paths:
+        if os.path.exists(p):
+            model_file = p
+            break
+
+    if model_file is None:
+        # No local model file found; let YOLO try to fetch the named model
+        model_file = model_name
+
     print(f"Loading {model_file} model...")
     model = YOLO(model_file)
     
