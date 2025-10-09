@@ -16,18 +16,23 @@ find_package(vision_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
 
-# Install Python modules
-ament_python_install_package(${PROJECT_NAME})
+# No Python package directory to install
 
 # Install Python scripts
 install(PROGRAMS
-  live_object_detection.py
+  src/live_object_detection.py
+  src/live_object_detection_jetson.py
+  src/camera_publisher_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
 # No test scripts to install
 
-# No launch files or config directories to install
+# Install launch files
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

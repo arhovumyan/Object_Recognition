@@ -12,7 +12,7 @@ Jetson Optimizations:
 - Jetson-specific camera settings
 
 Usage:
-    python3 live_object_detection_jetson.py
+    python3 src/live_object_detection_jetson.py
     
 Press 'q' to quit
 """
@@ -51,9 +51,10 @@ def main():
 
     # Look for model in models directory first
     candidate_paths = [
-        os.path.join('models', model_name),  # ./models/yolov8n.pt
-        os.path.join('.', model_name),       # ./yolov8n.pt
-        model_name                           # fallback - ultralytics will download
+        os.path.join('..', 'models', model_name),  # ../models/yolov8n.pt
+        os.path.join('models', model_name),        # models/yolov8n.pt
+        os.path.join('..', model_name),            # ../yolov8n.pt
+        model_name                                 # fallback
     ]
 
     model_file = None
@@ -175,7 +176,7 @@ def main():
             
             if boxes is not None and len(boxes) > 0:
                 for box in boxes:
-                    # Get box coordinates
+                    # Get detection info
                     x1, y1, x2, y2 = map(int, box.xyxy[0].cpu())
                     
                     # Get confidence and class
