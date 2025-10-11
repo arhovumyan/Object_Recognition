@@ -67,7 +67,8 @@ class ObjectDetectionSystem:
     """Unified object detection system that can work standalone or as ROS2 node."""
     
     def __init__(self, use_ros2=False, ros2_node=None, skip_camera=False, 
-                 use_classifier=True, classifier_threshold=0.3, enable_logging=True):
+                 use_classifier=True, classifier_threshold=0.6, enable_logging=True):
+                 
         self.use_ros2 = use_ros2 and ROS2_AVAILABLE
         self.ros2_node = ros2_node
         self.use_classifier = use_classifier and CLASSIFIER_AVAILABLE

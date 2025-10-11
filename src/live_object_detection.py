@@ -25,6 +25,30 @@ import time
 import torch
 import argparse
 
+# Import our MobileNetV3 classifier
+try:
+    from .mobilenet_classifier import MobileNetV3Classifier
+    CLASSIFIER_AVAILABLE = True
+except ImportError:
+    try:
+        from mobilenet_classifier import MobileNetV3Classifier
+        CLASSIFIER_AVAILABLE = True
+    except ImportError:
+        print("Warning: MobileNetV3 classifier not available. Running YOLO-only mode.")
+        CLASSIFIER_AVAILABLE = False
+
+# Import detection logger
+try:
+    from .detection_logger import DetectionLogger, get_logger, cleanup_logger
+    LOGGER_AVAILABLE = True
+except ImportError:
+    try:
+        from detection_logger import DetectionLogger, get_logger, cleanup_logger
+        LOGGER_AVAILABLE = True
+    except ImportError:
+        print("Warning: Detection logger not available. Running without logging.")
+        LOGGER_AVAILABLE = False
+
 # ROS2 imports (optional)
 try:
     import rclpy
@@ -42,16 +66,35 @@ except ImportError:
 class ObjectDetectionSystem:
     """Unified object detection system that can work standalone or as ROS2 node."""
     
-    def __init__(self, use_ros2=False, ros2_node=None, skip_camera=False):
+    def __init__(self, use_ros2=False, ros2_node=None, skip_camera=False, 
+                 use_classifier=True, classifier_threshold=0.6, enable_logging=True):
+                 
         self.use_ros2 = use_ros2 and ROS2_AVAILABLE
         self.ros2_node = ros2_node
+        self.use_classifier = use_classifier and CLASSIFIER_AVAILABLE
+        self.classifier_threshold = classifier_threshold
+        self.enable_logging = enable_logging and LOGGER_AVAILABLE
+        
+        # Initialize logger
+        if self.enable_logging:
+            self.logger = get_logger()
+            print("Detection logging enabled")
+        else:
+            self.logger = None
         
         # Initialize YOLO model
         self.setup_model()
         
-        # Target objects to highlight
+        # Initialize MobileNetV3 classifier
+        if self.use_classifier:
+            self.setup_classifier()
+        
+        # Target objects to highlight (for display purposes)
         self.target_objects = ['person', 'cell phone', 'laptop', 'mouse', 'tv', 
                               'bottle', 'cup', 'book', 'keyboard', 'chair']
+        
+        # YOLO classes to filter for MobileNetV3 classification
+        self.yolo_filter_classes = ['person', 'backpack', 'umbrella', 'handbag', 'suitcase']
         
         # Camera setup (skip in ROS2 mode if we're subscribing to a topic)
         self.cap = None
@@ -157,6 +200,66 @@ class ObjectDetectionSystem:
                 self.model = YOLO('yolov8n.pt')
         
         print("Model loaded successfully!")
+        
+        # Log system initialization
+        if self.logger:
+            self.logger._log_system_start()
+    
+    def setup_classifier(self):
+        """Initialize MobileNetV3 classifier."""
+        print("=" * 60)
+        print("Initializing MobileNetV3 Classifier")
+        print("=" * 60)
+        
+        try:
+            # Look for fine-tuned model in models directory
+            model_paths = [
+                os.path.join('..', 'models', 'mobilenetv3_tent_mannequin.pth'),
+                os.path.join('models', 'mobilenetv3_tent_mannequin.pth'),
+                os.path.join('..', 'mobilenetv3_tent_mannequin.pth'),
+                'mobilenetv3_tent_mannequin.pth'
+            ]
+            
+            model_path = None
+            for path in model_paths:
+                if os.path.exists(path):
+                    model_path = path
+                    break
+            
+            # Initialize classifier
+            self.classifier = MobileNetV3Classifier(model_path=model_path)
+            
+            if model_path:
+                print(f"MobileNetV3: Using fine-tuned model from {model_path}")
+            else:
+                print("MobileNetV3: Using pre-trained ImageNet weights")
+                print("MobileNetV3: Note - For best results, fine-tune on aerial tent/mannequin images")
+            
+            print("MobileNetV3: Classifier ready for inference")
+            
+            # Log classifier initialization
+            if self.logger:
+                self.logger._write_log({
+                    'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+                    'event_type': 'classifier_init',
+                    'classifier_available': True,
+                    'model_path': model_path or 'ImageNet pre-trained',
+                    'device': self.classifier.device if hasattr(self, 'classifier') else 'unknown'
+                })
+            
+        except Exception as e:
+            print(f"Error initializing MobileNetV3 classifier: {e}")
+            print("Falling back to YOLO-only mode")
+            self.use_classifier = False
+            
+            # Log classifier failure
+            if self.logger:
+                self.logger._write_log({
+                    'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+                    'event_type': 'classifier_init_failed',
+                    'error': str(e),
+                    'fallback_mode': 'yolo_only'
+                })
     
     def setup_camera(self):
         """Initialize camera."""
@@ -206,83 +309,236 @@ class ObjectDetectionSystem:
         self.target_pos_pub = self.ros2_node.create_publisher(
             Pose2D, '/target_position', 10)
         
+        # New publishers for two-stage pipeline
+        self.target_type_pub = self.ros2_node.create_publisher(
+            String, '/target_type', 10)
+        self.payload_trigger_pub = self.ros2_node.create_publisher(
+            Bool, '/payload_drop_trigger', 10)
+        self.classification_status_pub = self.ros2_node.create_publisher(
+            String, '/classification_status', 10)
+        
         # CV bridge for image conversion
         self.bridge = CvBridge()
         
         self.ros2_node.get_logger().info('Object Detection System with ROS2 integration started')
     
+    def filter_yolo_detections(self, results):
+        """Filter YOLO detections to only include classes relevant for classification."""
+        filtered_detections = []
+        
+        for result in results:
+            boxes = result.boxes
+            if boxes is not None and len(boxes) > 0:
+                for box in boxes:
+                    # Get class name
+                    class_id = int(box.cls[0].cpu())
+                    class_name = self.model.names[class_id]
+                    
+                    # Filter for relevant classes
+                    if class_name in self.yolo_filter_classes:
+                        # Get box coordinates and confidence
+                        x1, y1, x2, y2 = map(int, box.xyxy[0].cpu())
+                        confidence = float(box.conf[0].cpu())
+                        
+                        # Only include high-confidence detections
+                        if confidence > 0.3:
+                            filtered_detections.append({
+                                'bbox': [x1, y1, x2, y2],
+                                'confidence': confidence,
+                                'class_name': class_name,
+                                'class_id': class_id
+                            })
+        
+        return filtered_detections
+    
     def process_detections(self, results, frame):
-        """Process detection results and handle ROS2 publishing."""
+        """Process detection results with two-stage pipeline and handle ROS2 publishing."""
         detections_msg = None
         target_found = False
         target_position = None
+        target_type = None
         
         if self.use_ros2:
             detections_msg = Detection2DArray()
             detections_msg.header.stamp = self.ros2_node.get_clock().now().to_msg()
             detections_msg.header.frame_id = "camera_frame"
         
-        for result in results:
-            boxes = result.boxes
+        # Process with two-stage pipeline if classifier is available
+        if self.use_classifier:
+            # Filter YOLO detections for relevant classes
+            filtered_detections = self.filter_yolo_detections(results)
             
-            if boxes is not None and len(boxes) > 0:
-                for box in boxes:
-                    # Get box coordinates
-                    x1, y1, x2, y2 = map(int, box.xyxy[0].cpu())
+            if filtered_detections:
+                # Extract crops for classification
+                crops = []
+                for detection in filtered_detections:
+                    crop = self.classifier.crop_from_bbox(frame, detection['bbox'])
+                    crops.append(crop)
+                
+                # Classify crops with MobileNetV3
+                classification_results = self.classifier.classify_crops(crops)
+                
+                # Process classification results
+                for i, (detection, classification) in enumerate(zip(filtered_detections, classification_results)):
+                    x1, y1, x2, y2 = detection['bbox']
+                    yolo_conf = detection['confidence']
+                    yolo_class = detection['class_name']
                     
-                    # Get confidence and class
-                    confidence = float(box.conf[0].cpu())
-                    class_id = int(box.cls[0].cpu())
-                    class_name = self.model.names[class_id]
+                    # Get classification result
+                    class_name = classification['class']
+                    class_conf = classification['confidence']
                     
-                    # Choose color based on whether it's a target object
-                    if class_name in self.target_objects:
-                        color = (0, 255, 0)  # Green for target objects
-                        thickness = 3
+                    # Log classification result
+                    if self.logger:
+                        inference_time = 0.05  # Approximate inference time
+                        self.logger.log_classification_result(
+                            yolo_class, yolo_conf, class_name, class_conf,
+                            [x1, y1, x2, y2], 
+                            class_name in ['tent', 'mannequin'] and class_conf >= self.classifier_threshold,
+                            class_name if class_name in ['tent', 'mannequin'] else None,
+                            'water_bottle' if class_name == 'mannequin' else 'beacon' if class_name == 'tent' else None,
+                            inference_time, self.frame_count, self.fps, self.device
+                        )
+                    
+                    # Only process tent/mannequin detections above threshold
+                    if class_name in ['tent', 'mannequin'] and class_conf >= self.classifier_threshold:
+                        # This is a target!
+                        target_found = True
+                        
+                        # Determine target type and payload
+                        if class_name == 'mannequin':
+                            target_type = 'mannequin'
+                            payload_type = 'water_bottle'
+                            color = (0, 255, 255)  # Yellow for mannequin
+                        else:  # tent
+                            target_type = 'tent'
+                            payload_type = 'beacon'
+                            color = (0, 255, 0)  # Green for tent
+                        
+                        thickness = 4
+                        
+                        # Calculate center position for payload drop
+                        center_x = (x1 + x2) / 2
+                        center_y = (y1 + y2) / 2
+                        
+                        target_position = Pose2D() if self.use_ros2 else None
+                        if target_position:
+                            target_position.x = center_x
+                            target_position.y = center_y
+                            target_position.theta = class_conf  # Store confidence in theta
+                        
+                        # Draw thick bounding box for confirmed targets
+                        cv2.rectangle(frame, (x1, y1), (x2, y2), color, thickness)
+                        
+                        # Draw classification label
+                        label = f"{class_name.upper()} ({payload_type}) {class_conf:.2f}"
+                        cv2.putText(
+                            frame,
+                            label,
+                            (x1, y1 - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX,
+                            0.7,
+                            color,
+                            2,
+                            cv2.LINE_AA
+                        )
+                        
+                        # Draw target center
+                        cv2.circle(frame, (int(center_x), int(center_y)), 8, color, -1)
+                        cv2.circle(frame, (int(center_x), int(center_y)), 12, (255, 255, 255), 2)
+                        
+                        # Log payload trigger
+                        if self.logger:
+                            self.logger.log_payload_trigger(
+                                target_type, payload_type, class_conf,
+                                center_x, center_y, self.frame_count, self.fps
+                            )
+                        
+                        # ROS2 message creation for confirmed targets
+                        if self.use_ros2 and detections_msg is not None:
+                            detection_msg = Detection2D()
+                            detection_msg.bbox.center.position.x = center_x
+                            detection_msg.bbox.center.position.y = center_y
+                            detection_msg.bbox.size_x = float(x2 - x1)
+                            detection_msg.bbox.size_y = float(y2 - y1)
+                            
+                            hypothesis = ObjectHypothesisWithPose()
+                            hypothesis.hypothesis.class_id = f"{class_name}_{payload_type}"
+                            hypothesis.hypothesis.score = class_conf
+                            detection_msg.results.append(hypothesis)
+                            
+                            detections_msg.detections.append(detection_msg)
                     else:
+                        # Not a target, draw with normal styling
+                        color = (128, 128, 128)  # Gray for filtered but not targets
+                        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 1)
+                        
+                        label = f"{yolo_class}->{class_name} {class_conf:.2f}"
+                        cv2.putText(
+                            frame,
+                            label,
+                            (x1, y1 - 5),
+                            cv2.FONT_HERSHEY_SIMPLEX,
+                            0.4,
+                            color,
+                            1,
+                            cv2.LINE_AA
+                        )
+            
+            # Draw all other YOLO detections normally
+            for result in results:
+                boxes = result.boxes
+                if boxes is not None and len(boxes) > 0:
+                    for box in boxes:
+                        x1, y1, x2, y2 = map(int, box.xyxy[0].cpu())
+                        confidence = float(box.conf[0].cpu())
+                        class_id = int(box.cls[0].cpu())
+                        class_name = self.model.names[class_id]
+                        
+                        # Skip if already processed by classifier
+                        if class_name in self.yolo_filter_classes:
+                            continue
+                        
+                        # Draw other objects normally
                         color = (255, 0, 0)  # Blue for other objects
-                        thickness = 2
-                    
-                    # Draw bounding box
-                    cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
-                    
-                    # Prepare label
-                    label = f"{class_name[:10]} {confidence:.1f}"
-                    
-                    # Draw label
-                    cv2.putText(
-                        frame,
-                        label,
-                        (x1, y1 - 5),
-                        cv2.FONT_HERSHEY_SIMPLEX,
-                        0.5,
-                        color,
-                        1,
-                        cv2.LINE_AA
-                    )
-                    
-                    # ROS2 message creation
-                    if self.use_ros2 and detections_msg is not None:
-                        detection = Detection2D()
-                        detection.bbox.center.position.x = float((x1 + x2) / 2)
-                        detection.bbox.center.position.y = float((y1 + y2) / 2)
-                        detection.bbox.size_x = float(x2 - x1)
-                        detection.bbox.size_y = float(y2 - y1)
+                        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 1)
                         
-                        hypothesis = ObjectHypothesisWithPose()
-                        hypothesis.hypothesis.class_id = class_name
-                        hypothesis.hypothesis.score = confidence
-                        detection.results.append(hypothesis)
+                        label = f"{class_name[:10]} {confidence:.1f}"
+                        cv2.putText(
+                            frame,
+                            label,
+                            (x1, y1 - 5),
+                            cv2.FONT_HERSHEY_SIMPLEX,
+                            0.4,
+                            color,
+                            1,
+                            cv2.LINE_AA
+                        )
+        else:
+            # Fallback to original YOLO-only processing
+            for result in results:
+                boxes = result.boxes
+                if boxes is not None and len(boxes) > 0:
+                    for box in boxes:
+                        x1, y1, x2, y2 = map(int, box.xyxy[0].cpu())
+                        confidence = float(box.conf[0].cpu())
+                        class_id = int(box.cls[0].cpu())
+                        class_name = self.model.names[class_id]
                         
-                        detections_msg.detections.append(detection)
+                        color = (255, 0, 0)  # Blue for all objects in YOLO-only mode
+                        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
                         
-                        # Check if target object found
-                        if class_name in self.target_objects and confidence > 0.5:
-                            target_found = True
-                            target_position = Pose2D()
-                            target_position.x = detection.bbox.center.position.x
-                            target_position.y = detection.bbox.center.position.y
-                            target_position.theta = confidence
+                        label = f"{class_name[:10]} {confidence:.1f}"
+                        cv2.putText(
+                            frame,
+                            label,
+                            (x1, y1 - 5),
+                            cv2.FONT_HERSHEY_SIMPLEX,
+                            0.5,
+                            color,
+                            1,
+                            cv2.LINE_AA
+                        )
         
         # Publish ROS2 messages
         if self.use_ros2:
@@ -294,10 +550,35 @@ class ObjectDetectionSystem:
             if target_position:
                 self.target_pos_pub.publish(target_position)
             
+            # Publish target type for payload selection
+            if target_type:
+                target_type_msg = String()
+                target_type_msg.data = target_type
+                self.target_type_pub.publish(target_type_msg)
+            
+            # Publish payload drop trigger
+            if target_found:
+                trigger_msg = Bool()
+                trigger_msg.data = True
+                self.payload_trigger_pub.publish(trigger_msg)
+            
+            # Publish classification status
+            if self.use_classifier:
+                classification_msg = String()
+                classification_msg.data = f"Pipeline: YOLO→MobileNetV3 | Threshold: {self.classifier_threshold}"
+                self.classification_status_pub.publish(classification_msg)
+            
             # Publish status
             status_msg = String()
-            status_msg.data = f"Detected {len(detections_msg.detections) if detections_msg else 0} objects"
+            if self.use_classifier:
+                status_msg.data = f"Two-stage: {len(detections_msg.detections) if detections_msg else 0} targets found"
+            else:
+                status_msg.data = f"YOLO-only: {len(detections_msg.detections) if detections_msg else 0} objects"
             self.status_pub.publish(status_msg)
+        
+        # Log performance update periodically
+        if self.logger and self.frame_count % 100 == 0:
+            self.logger.log_performance_update(self.fps, self.device, self.frame_count)
     
     def run_detection_cycle(self, frame):
         """Run one detection cycle."""
@@ -422,6 +703,11 @@ class ObjectDetectionSystem:
         if self.cap is not None:
             self.cap.release()
         cv2.destroyAllWindows()
+        
+        # Cleanup logger
+        if self.logger:
+            self.logger.save_json_logs()
+            self.logger.print_summary()
 
 
 class ROS2ObjectDetectionNode(Node):
@@ -431,7 +717,7 @@ class ROS2ObjectDetectionNode(Node):
         super().__init__('object_detection_node')
         
         # Don't open camera in ROS2 mode - subscribe to camera topic instead
-        self.detection_system = ObjectDetectionSystem(use_ros2=True, ros2_node=self, skip_camera=True)
+        self.detection_system = ObjectDetectionSystem(use_ros2=True, ros2_node=self, skip_camera=True, enable_logging=True)
         
         # Subscribe to camera topic
         self.bridge = CvBridge()

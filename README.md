@@ -77,7 +77,3 @@ For GPU acceleration:
 - PyTorch
 - Ultralytics YOLOv8
 - ROS2 Jazzy (for ROS2 mode)
-
-## 📄 License
-
-MIT License

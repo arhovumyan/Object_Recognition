@@ -41,7 +41,7 @@ def generate_launch_description():
     
     classifier_threshold_arg = DeclareLaunchArgument(
         'classifier_threshold',
-        default_value='0.3',
+        default_value='0.6',
         description='MobileNetV3 classification confidence threshold'
     )
     

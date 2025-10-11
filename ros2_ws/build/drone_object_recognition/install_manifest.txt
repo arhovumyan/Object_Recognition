@@ -1,9 +1,11 @@
 /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/live_object_detection.py
 /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/live_object_detection_jetson.py
 /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/camera_publisher_node.py
-/home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/mobilenet_classifier.py
-/home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/detection_logger.py
-/home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/train_classifier.py
+/home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/Ryan_camera_output.py
+/home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/yolo_detection_ros2.py
+/home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/mock_mavros_services.py
+/home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/test_yolo_publisher.py
+/home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition//launch/test_yolo_detection.launch.py
 /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition//launch/object_recognition.launch.py
 /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/ament_index/resource_index/package_run_dependencies/drone_object_recognition
 /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/ament_index/resource_index/parent_prefix_path/drone_object_recognition

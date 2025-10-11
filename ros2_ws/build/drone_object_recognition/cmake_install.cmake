@@ -47,9 +47,10 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
     "/home/aro/Documents/ObjectRec/ros2_ws/src/drone_object_recognition/live_object_detection.py"
     "/home/aro/Documents/ObjectRec/ros2_ws/src/drone_object_recognition/live_object_detection_jetson.py"
     "/home/aro/Documents/ObjectRec/ros2_ws/src/drone_object_recognition/camera_publisher_node.py"
-    "/home/aro/Documents/ObjectRec/ros2_ws/src/drone_object_recognition/mobilenet_classifier.py"
-    "/home/aro/Documents/ObjectRec/ros2_ws/src/drone_object_recognition/detection_logger.py"
-    "/home/aro/Documents/ObjectRec/ros2_ws/src/drone_object_recognition/train_classifier.py"
+    "/home/aro/Documents/ObjectRec/ros2_ws/src/drone_object_recognition/Ryan_camera_output.py"
+    "/home/aro/Documents/ObjectRec/ros2_ws/src/drone_object_recognition/yolo_detection_ros2.py"
+    "/home/aro/Documents/ObjectRec/ros2_ws/src/drone_object_recognition/mock_mavros_services.py"
+    "/home/aro/Documents/ObjectRec/ros2_ws/src/drone_object_recognition/test_yolo_publisher.py"
     )
 endif()
 

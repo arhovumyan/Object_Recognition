@@ -32,6 +32,25 @@ def generate_launch_description():
         description='Detection confidence threshold'
     )
     
+    # Two-stage pipeline parameters
+    use_classifier_arg = DeclareLaunchArgument(
+        'use_classifier',
+        default_value='true',
+        description='Enable MobileNetV3 classifier for two-stage detection'
+    )
+    
+    classifier_threshold_arg = DeclareLaunchArgument(
+        'classifier_threshold',
+        default_value='0.6',
+        description='MobileNetV3 classification confidence threshold'
+    )
+    
+    classifier_model_path_arg = DeclareLaunchArgument(
+        'classifier_model_path',
+        default_value='models/mobilenetv3_tent_mannequin.pth',
+        description='Path to fine-tuned MobileNetV3 model (optional)'
+    )
+    
     # Camera Publisher Node (optional)
     camera_publisher_node = Node(
         package='drone_object_recognition',
@@ -50,7 +69,10 @@ def generate_launch_description():
         arguments=['--ros-args'],
         parameters=[{
             'camera_topic': LaunchConfiguration('camera_topic'),
-            'confidence_threshold': LaunchConfiguration('confidence_threshold')
+            'confidence_threshold': LaunchConfiguration('confidence_threshold'),
+            'use_classifier': LaunchConfiguration('use_classifier'),
+            'classifier_threshold': LaunchConfiguration('classifier_threshold'),
+            'classifier_model_path': LaunchConfiguration('classifier_model_path')
         }]
     )
     
@@ -58,6 +80,9 @@ def generate_launch_description():
         use_camera_node_arg,
         camera_topic_arg,
         confidence_threshold_arg,
+        use_classifier_arg,
+        classifier_threshold_arg,
+        classifier_model_path_arg,
         camera_publisher_node,
         object_detection_node
     ])
