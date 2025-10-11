@@ -1,0 +1,9 @@
+/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition/CMakeFiles/uninstall.dir
+/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition/CMakeFiles/drone_object_recognition_uninstall.dir
+/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition/CMakeFiles/test.dir
+/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition/CMakeFiles/edit_cache.dir
+/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition/CMakeFiles/rebuild_cache.dir
+/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition/CMakeFiles/list_install_components.dir
+/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition/CMakeFiles/install.dir
+/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition/CMakeFiles/install/local.dir
+/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition/CMakeFiles/install/strip.dir

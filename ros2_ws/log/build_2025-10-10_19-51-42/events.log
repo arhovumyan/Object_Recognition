@@ -1,0 +1,279 @@
+[0.000000] (-) TimerEvent: {}
+[0.000287] (drone_object_recognition) JobQueued: {'identifier': 'drone_object_recognition', 'dependencies': OrderedDict()}
+[0.000357] (drone_object_recognition) JobStarted: {'identifier': 'drone_object_recognition'}
+[0.010268] (drone_object_recognition) JobProgress: {'identifier': 'drone_object_recognition', 'progress': 'cmake'}
+[0.010533] (drone_object_recognition) JobProgress: {'identifier': 'drone_object_recognition', 'progress': 'build'}
+[0.010581] (drone_object_recognition) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition', '--', '-j16', '-l16'], 'cwd': '/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition', 'env': OrderedDict({'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'VSCODE_CWD': '/home/aro', 'VSCODE_ESM_ENTRYPOINT': 'vs/workbench/api/node/extensionHostProcess', 'USER': 'aro', 'VSCODE_NLS_CONFIG': '{"userLocale":"en-us","osLocale":"en-us","resolvedLanguage":"en","defaultMessagesFile":"/usr/share/cursor/resources/app/out/nls.messages.json","locale":"en-us","availableLanguages":{}}', 'VSCODE_HANDLES_UNCAUGHT_ERRORS': 'true', 'XDG_SESSION_TYPE': 'x11', 'CLUTTER_DISABLE_MIPMAPPED_TEXT': '1', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/aro', 'CHROME_DESKTOP': 'cursor.desktop', 'OLDPWD': '/home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition', 'DESKTOP_SESSION': 'ubuntu', 'VSCODE_IPC_HOOK': '/run/user/1000/vscode-7098c43d-1.7.-main.sock', 'GIO_LAUNCHED_DESKTOP_FILE': '/usr/share/applications/cursor.desktop', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'MANAGERPID': '2299', 'SYSTEMD_EXEC_PID': '2661', 'GSM_SKIP_SSH_AGENT_WORKAROUND': 'true', 'NO_COLOR': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '3464', 'VSCODE_CRASH_REPORTER_PROCESS_TYPE': 'extensionHost', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'VSCODE_L10N_BUNDLE_LOCATION': '', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'aro', 'FORCE_COLOR': '0', 'JOURNAL_STREAM': '9:23832', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'MEMORY_PRESSURE_WATCH': '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.Shell@x11.service/memory.pressure', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'aro', 'TERM': 'dumb', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'COMPOSER_NO_INTERACTION': '1', 'WINDOWPATH': '2', 'PATH': '/home/aro/.local/bin:/usr/local/cuda-12.4/bin:/home/aro/.local/bin:/usr/local/cuda-12.4/bin:/opt/ros/jazzy/bin:/home/aro/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/aroLinux:@/tmp/.ICE-unix/2626,unix/aroLinux:/tmp/.ICE-unix/2626', 'INVOCATION_ID': '55cf93d5a3d74604aaeb2094241d1e2c', 'XDG_MENU_PREFIX': 'gnome-', 'VSCODE_PROCESS_TITLE': 'extension-host  [1-1]', 'XDG_RUNTIME_DIR': '/run/user/1000', 'GDK_BACKEND': 'x11', 'CURSOR_AGENT': '1', 'DISPLAY': ':1', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'Unity', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/gdm/Xauthority', 'LS_COLORS': '', 'SBX_CHROME_API_RQ': '1', 'CURSOR_TRACE_ID': 'fedbf6c83ce74d7ea8eef01c16f147a2', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/opt/ros/jazzy', 'ORIGINAL_XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'GPG_AGENT_INFO': '/run/user/1000/gnupg/S.gpg-agent:0:1', 'GJS_DEBUG_OUTPUT': 'stderr', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'VSCODE_CODE_CACHE_PATH': '/home/aro/.config/Cursor/CachedData/fe5d1728063e86edeeda5bebd2c8e14bf4d0f960', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'MEMORY_PRESSURE_WRITE': 'c29tZSAyMDAwMDAgMjAwMDAwMAA=', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor:/opt/ros/jazzy', 'VSCODE_PID': '3464'}), 'shell': False}
+[0.071862] (drone_object_recognition) StdoutLine: {'line': b'-- Found ament_cmake: 2.5.4 (/opt/ros/jazzy/share/ament_cmake/cmake)\n'}
+[0.098756] (-) TimerEvent: {}
+[0.199036] (-) TimerEvent: {}
+[0.299299] (-) TimerEvent: {}
+[0.399667] (-) TimerEvent: {}
+[0.499955] (-) TimerEvent: {}
+[0.505824] (drone_object_recognition) StdoutLine: {'line': b'-- Found rclpy: 7.1.5 (/opt/ros/jazzy/share/rclpy/cmake)\n'}
+[0.506186] (drone_object_recognition) StdoutLine: {'line': b'-- Found sensor_msgs: 5.3.6 (/opt/ros/jazzy/share/sensor_msgs/cmake)\n'}
+[0.559216] (drone_object_recognition) StdoutLine: {'line': b'-- Found rosidl_generator_c: 4.6.6 (/opt/ros/jazzy/share/rosidl_generator_c/cmake)\n'}
+[0.576779] (drone_object_recognition) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 4.6.6 (/opt/ros/jazzy/share/rosidl_generator_cpp/cmake)\n'}
+[0.594531] (drone_object_recognition) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.600212] (-) TimerEvent: {}
+[0.615074] (drone_object_recognition) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.700427] (-) TimerEvent: {}
+[0.730324] (drone_object_recognition) StdoutLine: {'line': b'-- Found vision_msgs: 4.1.1 (/opt/ros/jazzy/share/vision_msgs/cmake)\n'}
+[0.750580] (drone_object_recognition) StdoutLine: {'line': b'-- Found cv_bridge: 4.1.0 (/opt/ros/jazzy/share/cv_bridge/cmake)\n'}
+[0.799480] (drone_object_recognition) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 7.3.2 (/opt/ros/jazzy/share/rmw_implementation_cmake/cmake)\n'}
+[0.800625] (-) TimerEvent: {}
+[0.800937] (drone_object_recognition) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 8.4.3 (/opt/ros/jazzy/share/rmw_fastrtps_cpp/cmake)\n'}
+[0.900892] (-) TimerEvent: {}
+[0.927215] (drone_object_recognition) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[1.001116] (-) TimerEvent: {}
+[1.067897] (drone_object_recognition) StdoutLine: {'line': b'-- Found image_transport: 5.1.7 (/opt/ros/jazzy/share/image_transport/cmake)\n'}
+[1.085178] (drone_object_recognition) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.17.3 (/opt/ros/jazzy/share/ament_lint_auto/cmake)\n'}
+[1.101297] (-) TimerEvent: {}
+[1.201617] (-) TimerEvent: {}
+[1.261583] (drone_object_recognition) StdoutLine: {'line': b"-- Added test 'copyright' to check source files copyright and LICENSE\n"}
+[1.301853] (-) TimerEvent: {}
+[1.402130] (-) TimerEvent: {}
+[1.502431] (-) TimerEvent: {}
+[1.602842] (-) TimerEvent: {}
+[1.703158] (-) TimerEvent: {}
+[1.803486] (-) TimerEvent: {}
+[1.903860] (-) TimerEvent: {}
+[2.004281] (-) TimerEvent: {}
+[2.104702] (-) TimerEvent: {}
+[2.205006] (-) TimerEvent: {}
+[2.305310] (-) TimerEvent: {}
+[2.405612] (-) TimerEvent: {}
+[2.505927] (-) TimerEvent: {}
+[2.606281] (-) TimerEvent: {}
+[2.706575] (-) TimerEvent: {}
+[2.806879] (-) TimerEvent: {}
+[2.907230] (-) TimerEvent: {}
+[3.007539] (-) TimerEvent: {}
+[3.107998] (-) TimerEvent: {}
+[3.208375] (-) TimerEvent: {}
+[3.308779] (-) TimerEvent: {}
+[3.409287] (-) TimerEvent: {}
+[3.509781] (-) TimerEvent: {}
+[3.610209] (-) TimerEvent: {}
+[3.710617] (-) TimerEvent: {}
+[3.811007] (-) TimerEvent: {}
+[3.911363] (-) TimerEvent: {}
+[4.011801] (-) TimerEvent: {}
+[4.112237] (-) TimerEvent: {}
+[4.212607] (-) TimerEvent: {}
+[4.313013] (-) TimerEvent: {}
+[4.413498] (-) TimerEvent: {}
+[4.514046] (-) TimerEvent: {}
+[4.614520] (-) TimerEvent: {}
+[4.714951] (-) TimerEvent: {}
+[4.815374] (-) TimerEvent: {}
+[4.915894] (-) TimerEvent: {}
+[5.016321] (-) TimerEvent: {}
+[5.116749] (-) TimerEvent: {}
+[5.217164] (-) TimerEvent: {}
+[5.317583] (-) TimerEvent: {}
+[5.417947] (-) TimerEvent: {}
+[5.518283] (-) TimerEvent: {}
+[5.618659] (-) TimerEvent: {}
+[5.719038] (-) TimerEvent: {}
+[5.819402] (-) TimerEvent: {}
+[5.919873] (-) TimerEvent: {}
+[6.020206] (-) TimerEvent: {}
+[6.120547] (-) TimerEvent: {}
+[6.221002] (-) TimerEvent: {}
+[6.321342] (-) TimerEvent: {}
+[6.421769] (-) TimerEvent: {}
+[6.522183] (-) TimerEvent: {}
+[6.622626] (-) TimerEvent: {}
+[6.723037] (-) TimerEvent: {}
+[6.823249] (drone_object_recognition) StdoutLine: {'line': b"-- Added test 'cppcheck' to perform static code analysis on C / C++ code\n"}
+[6.823715] (-) TimerEvent: {}
+[6.823751] (drone_object_recognition) StdoutLine: {'line': b'-- Configured cppcheck include dirs: \n'}
+[6.823894] (drone_object_recognition) StdoutLine: {'line': b'-- Configured cppcheck exclude dirs and/or files: \n'}
+[6.924071] (-) TimerEvent: {}
+[7.024443] (-) TimerEvent: {}
+[7.124860] (-) TimerEvent: {}
+[7.225299] (-) TimerEvent: {}
+[7.325685] (-) TimerEvent: {}
+[7.426055] (-) TimerEvent: {}
+[7.526547] (-) TimerEvent: {}
+[7.626931] (-) TimerEvent: {}
+[7.727271] (-) TimerEvent: {}
+[7.827719] (-) TimerEvent: {}
+[7.928054] (-) TimerEvent: {}
+[8.028475] (-) TimerEvent: {}
+[8.128894] (-) TimerEvent: {}
+[8.229327] (-) TimerEvent: {}
+[8.329804] (-) TimerEvent: {}
+[8.430178] (-) TimerEvent: {}
+[8.530601] (-) TimerEvent: {}
+[8.631041] (-) TimerEvent: {}
+[8.731428] (-) TimerEvent: {}
+[8.831780] (-) TimerEvent: {}
+[8.932122] (-) TimerEvent: {}
+[9.032510] (-) TimerEvent: {}
+[9.132943] (-) TimerEvent: {}
+[9.233292] (-) TimerEvent: {}
+[9.333724] (-) TimerEvent: {}
+[9.434115] (-) TimerEvent: {}
+[9.534591] (-) TimerEvent: {}
+[9.635041] (-) TimerEvent: {}
+[9.735541] (-) TimerEvent: {}
+[9.835965] (-) TimerEvent: {}
+[9.936328] (-) TimerEvent: {}
+[10.036728] (-) TimerEvent: {}
+[10.137092] (-) TimerEvent: {}
+[10.237438] (-) TimerEvent: {}
+[10.337841] (-) TimerEvent: {}
+[10.438216] (-) TimerEvent: {}
+[10.538558] (-) TimerEvent: {}
+[10.638869] (-) TimerEvent: {}
+[10.739257] (-) TimerEvent: {}
+[10.839693] (-) TimerEvent: {}
+[10.940025] (-) TimerEvent: {}
+[11.040409] (-) TimerEvent: {}
+[11.140839] (-) TimerEvent: {}
+[11.241291] (-) TimerEvent: {}
+[11.341747] (-) TimerEvent: {}
+[11.442111] (-) TimerEvent: {}
+[11.542513] (-) TimerEvent: {}
+[11.642876] (-) TimerEvent: {}
+[11.743222] (-) TimerEvent: {}
+[11.843657] (-) TimerEvent: {}
+[11.944016] (-) TimerEvent: {}
+[12.044396] (-) TimerEvent: {}
+[12.144798] (-) TimerEvent: {}
+[12.245260] (-) TimerEvent: {}
+[12.336105] (drone_object_recognition) StdoutLine: {'line': b"-- Added test 'cpplint' to check C / C++ code against the Google style\n"}
+[12.336491] (drone_object_recognition) StdoutLine: {'line': b'-- Configured cpplint exclude dirs and/or files: \n'}
+[12.345481] (-) TimerEvent: {}
+[12.445883] (-) TimerEvent: {}
+[12.546304] (-) TimerEvent: {}
+[12.646739] (-) TimerEvent: {}
+[12.747097] (-) TimerEvent: {}
+[12.847559] (-) TimerEvent: {}
+[12.948086] (-) TimerEvent: {}
+[13.040752] (drone_object_recognition) StdoutLine: {'line': b"-- Added test 'flake8' to check Python code syntax and style conventions\n"}
+[13.041174] (drone_object_recognition) StdoutLine: {'line': b"-- Configured 'flake8' exclude dirs and/or files: \n"}
+[13.048255] (-) TimerEvent: {}
+[13.148662] (-) TimerEvent: {}
+[13.249081] (-) TimerEvent: {}
+[13.349497] (-) TimerEvent: {}
+[13.449886] (-) TimerEvent: {}
+[13.550251] (-) TimerEvent: {}
+[13.650590] (-) TimerEvent: {}
+[13.750942] (-) TimerEvent: {}
+[13.851266] (-) TimerEvent: {}
+[13.951598] (-) TimerEvent: {}
+[14.051989] (-) TimerEvent: {}
+[14.152349] (-) TimerEvent: {}
+[14.252810] (-) TimerEvent: {}
+[14.353285] (-) TimerEvent: {}
+[14.386826] (drone_object_recognition) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[14.453604] (-) TimerEvent: {}
+[14.554002] (-) TimerEvent: {}
+[14.654470] (-) TimerEvent: {}
+[14.754930] (-) TimerEvent: {}
+[14.855327] (-) TimerEvent: {}
+[14.955804] (-) TimerEvent: {}
+[15.056251] (-) TimerEvent: {}
+[15.090749] (drone_object_recognition) StdoutLine: {'line': b"-- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257\n"}
+[15.156519] (-) TimerEvent: {}
+[15.256869] (-) TimerEvent: {}
+[15.357226] (-) TimerEvent: {}
+[15.457742] (-) TimerEvent: {}
+[15.558140] (-) TimerEvent: {}
+[15.658567] (-) TimerEvent: {}
+[15.758980] (-) TimerEvent: {}
+[15.859400] (-) TimerEvent: {}
+[15.959837] (-) TimerEvent: {}
+[16.060152] (-) TimerEvent: {}
+[16.160487] (-) TimerEvent: {}
+[16.260793] (-) TimerEvent: {}
+[16.361253] (-) TimerEvent: {}
+[16.461768] (-) TimerEvent: {}
+[16.562197] (-) TimerEvent: {}
+[16.662546] (-) TimerEvent: {}
+[16.762907] (-) TimerEvent: {}
+[16.863305] (-) TimerEvent: {}
+[16.963787] (-) TimerEvent: {}
+[17.064137] (-) TimerEvent: {}
+[17.164575] (-) TimerEvent: {}
+[17.265006] (-) TimerEvent: {}
+[17.365358] (-) TimerEvent: {}
+[17.465685] (-) TimerEvent: {}
+[17.566035] (-) TimerEvent: {}
+[17.666423] (-) TimerEvent: {}
+[17.766850] (-) TimerEvent: {}
+[17.867175] (-) TimerEvent: {}
+[17.967580] (-) TimerEvent: {}
+[18.067905] (-) TimerEvent: {}
+[18.168325] (-) TimerEvent: {}
+[18.268727] (-) TimerEvent: {}
+[18.369205] (-) TimerEvent: {}
+[18.469579] (-) TimerEvent: {}
+[18.569973] (-) TimerEvent: {}
+[18.670345] (-) TimerEvent: {}
+[18.770774] (-) TimerEvent: {}
+[18.871156] (-) TimerEvent: {}
+[18.971554] (-) TimerEvent: {}
+[19.071977] (-) TimerEvent: {}
+[19.172304] (-) TimerEvent: {}
+[19.272628] (-) TimerEvent: {}
+[19.373003] (-) TimerEvent: {}
+[19.473431] (-) TimerEvent: {}
+[19.573896] (-) TimerEvent: {}
+[19.674201] (-) TimerEvent: {}
+[19.774635] (-) TimerEvent: {}
+[19.874985] (-) TimerEvent: {}
+[19.975331] (-) TimerEvent: {}
+[20.075680] (-) TimerEvent: {}
+[20.176009] (-) TimerEvent: {}
+[20.276370] (-) TimerEvent: {}
+[20.376736] (-) TimerEvent: {}
+[20.477074] (-) TimerEvent: {}
+[20.577405] (-) TimerEvent: {}
+[20.590863] (drone_object_recognition) StdoutLine: {'line': b"-- Added test 'uncrustify' to check C / C++ code style\n"}
+[20.591369] (drone_object_recognition) StdoutLine: {'line': b'-- Configured uncrustify additional arguments: \n'}
+[20.677615] (-) TimerEvent: {}
+[20.778106] (-) TimerEvent: {}
+[20.878473] (-) TimerEvent: {}
+[20.978896] (-) TimerEvent: {}
+[21.079270] (-) TimerEvent: {}
+[21.179707] (-) TimerEvent: {}
+[21.275458] (drone_object_recognition) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[21.278668] (drone_object_recognition) StdoutLine: {'line': b'-- Configuring done (21.2s)\n'}
+[21.279840] (-) TimerEvent: {}
+[21.285033] (drone_object_recognition) StdoutLine: {'line': b'-- Generating done (0.0s)\n'}
+[21.287427] (drone_object_recognition) StdoutLine: {'line': b'-- Build files have been written to: /home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition\n'}
+[21.341020] (drone_object_recognition) CommandEnded: {'returncode': 0}
+[21.342137] (drone_object_recognition) JobProgress: {'identifier': 'drone_object_recognition', 'progress': 'install'}
+[21.363506] (drone_object_recognition) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition'], 'cwd': '/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition', 'env': OrderedDict({'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'VSCODE_CWD': '/home/aro', 'VSCODE_ESM_ENTRYPOINT': 'vs/workbench/api/node/extensionHostProcess', 'USER': 'aro', 'VSCODE_NLS_CONFIG': '{"userLocale":"en-us","osLocale":"en-us","resolvedLanguage":"en","defaultMessagesFile":"/usr/share/cursor/resources/app/out/nls.messages.json","locale":"en-us","availableLanguages":{}}', 'VSCODE_HANDLES_UNCAUGHT_ERRORS': 'true', 'XDG_SESSION_TYPE': 'x11', 'CLUTTER_DISABLE_MIPMAPPED_TEXT': '1', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/aro', 'CHROME_DESKTOP': 'cursor.desktop', 'OLDPWD': '/home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition', 'DESKTOP_SESSION': 'ubuntu', 'VSCODE_IPC_HOOK': '/run/user/1000/vscode-7098c43d-1.7.-main.sock', 'GIO_LAUNCHED_DESKTOP_FILE': '/usr/share/applications/cursor.desktop', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'MANAGERPID': '2299', 'SYSTEMD_EXEC_PID': '2661', 'GSM_SKIP_SSH_AGENT_WORKAROUND': 'true', 'NO_COLOR': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '3464', 'VSCODE_CRASH_REPORTER_PROCESS_TYPE': 'extensionHost', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'VSCODE_L10N_BUNDLE_LOCATION': '', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'aro', 'FORCE_COLOR': '0', 'JOURNAL_STREAM': '9:23832', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'MEMORY_PRESSURE_WATCH': '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.Shell@x11.service/memory.pressure', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'aro', 'TERM': 'dumb', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'COMPOSER_NO_INTERACTION': '1', 'WINDOWPATH': '2', 'PATH': '/home/aro/.local/bin:/usr/local/cuda-12.4/bin:/home/aro/.local/bin:/usr/local/cuda-12.4/bin:/opt/ros/jazzy/bin:/home/aro/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/aroLinux:@/tmp/.ICE-unix/2626,unix/aroLinux:/tmp/.ICE-unix/2626', 'INVOCATION_ID': '55cf93d5a3d74604aaeb2094241d1e2c', 'XDG_MENU_PREFIX': 'gnome-', 'VSCODE_PROCESS_TITLE': 'extension-host  [1-1]', 'XDG_RUNTIME_DIR': '/run/user/1000', 'GDK_BACKEND': 'x11', 'CURSOR_AGENT': '1', 'DISPLAY': ':1', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'Unity', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/gdm/Xauthority', 'LS_COLORS': '', 'SBX_CHROME_API_RQ': '1', 'CURSOR_TRACE_ID': 'fedbf6c83ce74d7ea8eef01c16f147a2', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/opt/ros/jazzy', 'ORIGINAL_XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'GPG_AGENT_INFO': '/run/user/1000/gnupg/S.gpg-agent:0:1', 'GJS_DEBUG_OUTPUT': 'stderr', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/aro/Documents/ObjectRec/ros2_ws/build/drone_object_recognition', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'VSCODE_CODE_CACHE_PATH': '/home/aro/.config/Cursor/CachedData/fe5d1728063e86edeeda5bebd2c8e14bf4d0f960', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'MEMORY_PRESSURE_WRITE': 'c29tZSAyMDAwMDAgMjAwMDAwMAA=', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor:/opt/ros/jazzy', 'VSCODE_PID': '3464'}), 'shell': False}
+[21.380111] (-) TimerEvent: {}
+[21.382397] (drone_object_recognition) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[21.382764] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/live_object_detection.py\n'}
+[21.382934] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/live_object_detection_jetson.py\n'}
+[21.383088] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/camera_publisher_node.py\n'}
+[21.383233] (drone_object_recognition) StdoutLine: {'line': b'-- Installing: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/mobilenet_classifier.py\n'}
+[21.383673] (drone_object_recognition) StdoutLine: {'line': b'-- Installing: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/detection_logger.py\n'}
+[21.384120] (drone_object_recognition) StdoutLine: {'line': b'-- Installing: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/lib/drone_object_recognition/train_classifier.py\n'}
+[21.384400] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition//launch\n'}
+[21.384542] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition//launch/object_recognition.launch.py\n'}
+[21.384680] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/ament_index/resource_index/package_run_dependencies/drone_object_recognition\n'}
+[21.384805] (drone_object_recognition) StdoutLine: {'line': b'-- Installing: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/ament_index/resource_index/parent_prefix_path/drone_object_recognition\n'}
+[21.384926] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/environment/ament_prefix_path.sh\n'}
+[21.385046] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/environment/ament_prefix_path.dsv\n'}
+[21.385167] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/environment/path.sh\n'}
+[21.385289] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/environment/path.dsv\n'}
+[21.385429] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/local_setup.bash\n'}
+[21.385550] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/local_setup.sh\n'}
+[21.385701] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/local_setup.zsh\n'}
+[21.385857] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/local_setup.dsv\n'}
+[21.385995] (drone_object_recognition) StdoutLine: {'line': b'-- Installing: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/package.dsv\n'}
+[21.386139] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/ament_index/resource_index/packages/drone_object_recognition\n'}
+[21.386279] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/cmake/drone_object_recognitionConfig.cmake\n'}
+[21.386424] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/cmake/drone_object_recognitionConfig-version.cmake\n'}
+[21.386571] (drone_object_recognition) StdoutLine: {'line': b'-- Up-to-date: /home/aro/Documents/ObjectRec/ros2_ws/install/drone_object_recognition/share/drone_object_recognition/package.xml\n'}
+[21.387522] (drone_object_recognition) CommandEnded: {'returncode': 0}
+[21.417051] (drone_object_recognition) JobEnded: {'identifier': 'drone_object_recognition', 'rc': 0}
+[21.418430] (-) EventReactorShutdown: {}
