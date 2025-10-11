@@ -3,12 +3,19 @@
 """
 ROS2 Version of YOLO Detection System for Drone Flight Control
 Converted from ROS1 to ROS2 with async service calls and modern ROS2 patterns.
+
+HUMBLE COMPATIBILITY NOTES:
+- Removed throttle_duration_sec parameter from logger calls (Jazzy-specific feature)
+- Replaced ultralytics_ros.msg.YoloResult with standard vision_msgs.msg.Detection2DArray
+- Updated callback function to work with standard vision_msgs format
+- All async service call patterns remain compatible with Humble
 """
 
 import rclpy
 from rclpy.node import Node
-from ultralytics_ros.msg import YoloResult
-from vision_msgs.msg import Detection2D
+# Note: ultralytics_ros may not be available in Humble, using standard vision_msgs instead
+# from ultralytics_ros.msg import YoloResult
+from vision_msgs.msg import Detection2D, Detection2DArray
 from mavros_msgs.srv import (
     CommandLong,
     SetMode,
@@ -114,9 +121,10 @@ class YoloResultSubscriber(Node):
         self.servo_controller.set_node(self)
 
         # Subscribers
+        # Updated for Humble compatibility - using standard vision_msgs instead of ultralytics_ros
         self.subscription = self.create_subscription(
-            YoloResult,
-            'yolo_result',
+            Detection2DArray,
+            'yolo_result',  # or 'detections' depending on your publisher
             self.callback,
             1
         )
@@ -288,11 +296,11 @@ class YoloResultSubscriber(Node):
         )
 
         if self.within_geofence:
-            self.get_logger().info(f"{GREEN}Geofence status: Inside{RESET}", throttle_duration_sec=10)
+            self.get_logger().info(f"{GREEN}Geofence status: Inside{RESET}")
             message = "within geofence"
             self.send_status(message, True)
         else:
-            self.get_logger().info(f"{YELLOW}Geofence status: Outside{RESET}", throttle_duration_sec=10)
+            self.get_logger().info(f"{YELLOW}Geofence status: Outside{RESET}")
             message = "NOT within geofence"
             self.send_status(message, True)
 
@@ -365,7 +373,7 @@ class YoloResultSubscriber(Node):
 
     def speed_cb(self, msg):
         """Handle VFR_HUD messages for speed information."""
-        self.get_logger().info(f"{BLUE}Current airspeed: {msg.airspeed:.2f}{RESET}", throttle_duration_sec=10)
+        self.get_logger().info(f"{BLUE}Current airspeed: {msg.airspeed:.2f}{RESET}")
 
     def gps_calc(self, gps_lat, gps_lon, target_x, target_y, img_width, img_height, yaw_degrees):
         """
@@ -408,9 +416,9 @@ class YoloResultSubscriber(Node):
         return new_gps_lat, new_gps_lon
 
     def callback(self, msg):
-        """Main YOLO detection callback."""
-        if msg.detections.detections:
-            self.get_logger().info(f"{len(msg.detections.detections)} object(s) detected!")
+        """Main YOLO detection callback - updated for Humble compatibility."""
+        if msg.detections:
+            self.get_logger().info(f"{len(msg.detections)} object(s) detected!")
             
             # Note: GPS data request would need to be implemented
             # For now, using dummy GPS data
@@ -419,8 +427,8 @@ class YoloResultSubscriber(Node):
             gps_alt = 20.0  # Dummy altitude
             yaw = 0.0  # Dummy yaw
             
-            bbox_coords = msg.detections.detections
-            self.get_logger().info(f"Current wp_reached {self.waypoint_reached}", throttle_duration_sec=5)
+            bbox_coords = msg.detections
+            self.get_logger().info(f"Current wp_reached {self.waypoint_reached}")
 
             if self.within_geofence:
                 for i in range(len(bbox_coords)):
@@ -434,7 +442,15 @@ class YoloResultSubscriber(Node):
                         yaw,
                     )
                     
-                    detected_name = self.class_names[bbox_coords[i].results[0].hypothesis.class_id] if bbox_coords[i].results[0].hypothesis.class_id < len(self.class_names) else "unknown"
+                    # Updated for standard vision_msgs format
+                    # vision_msgs uses results[0].hypothesis.class_id for class identification
+                    if (bbox_coords[i].results and 
+                        len(bbox_coords[i].results) > 0 and 
+                        bbox_coords[i].results[0].hypothesis.class_id < len(self.class_names)):
+                        detected_name = self.class_names[bbox_coords[i].results[0].hypothesis.class_id]
+                    else:
+                        detected_name = "unknown"
+                    
                     index = max(self.next_after_takeoff, self.waypoint_reached + 1)
                     
                     if not self.compare_object_names(detected_name):
@@ -465,7 +481,7 @@ class YoloResultSubscriber(Node):
 
                         self.get_logger().info(f"Detected objects: {list(self.detected_object_waypoints.get_detected_objects())}")
         else:
-            self.get_logger().info("No objects detected.", throttle_duration_sec=5)
+            self.get_logger().info("No objects detected.")
 
     def compare_object_names(self, object_name):
         """Check if object name already exists in queue."""
